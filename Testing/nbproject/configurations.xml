@@ -36,7 +36,8 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>8</standard>
+          <stripSymbols>true</stripSymbols>
+          <standard>11</standard>
         </ccTool>
       </compileType>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
