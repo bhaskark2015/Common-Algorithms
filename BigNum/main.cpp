@@ -79,6 +79,9 @@ public:
         }
         return Bignum(ans);
     }
+ Bignum operator* ( Bignum &num){
+     
+ }
     friend ostream & operator<<( ostream &, const Bignum&); 
     friend istream & operator>>(istream &,Bignum&);
 };

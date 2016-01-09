@@ -47,13 +47,21 @@ public:
 /*
  * 
  */
+
+
+class FourStrings{
+	public:
+	int shortestLength(string a,string b,string c,string d){
+            
+	}
+	};
+        
+        
 int main(int argc, char** argv) {
-    PalindromePrime test;
     
-#define DEBUG
+#define DEBUG2
 #ifdef DEBUG
     freopen("input.txt","r",stdin);
-#endif
     int t;
     cin >> t;
     while(t--){
@@ -61,6 +69,21 @@ int main(int argc, char** argv) {
         cin >> a>> b;
         cout<<test.count(a,b)<<endl;
     }
+#endif
+    
+
+#ifdef DEBUG2
+    freopen("input1.txt","r",stdin);
+    int t;
+    cin >> t;
+    while(t--){
+        string a,b,c,d;
+        cin >> a>> b>>c>>d;
+        cout<<test.count(a,b)<<endl;
+    }
+#endif
+    
+    
     
     
     return 0;
