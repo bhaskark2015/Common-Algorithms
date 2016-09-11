@@ -1,10 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/* 
+/*
  * File:   main.cpp
  * Author: Bhaskar
  *
@@ -39,11 +34,12 @@ public:
     int search(const vector<int> &, int);
     vector<int> order(vector<int> &heights, vector<int> &infronts);
     string getPermutation(int n, int k);
-    int pow(int, int, int);
+    int pow(int x, int d, int n);
     vector<vector<string> > solveNQueens(int A);
     string minWindow(string S, string T);
     string fractionToDecimal(int numerator, int denominator);
-
+    vector<int> findSubstring(string A, const vector<string> &B);
+    int maxPoints(vector<int> &A, vector<int> &B) ;
 };
 
 int Solution::isNumber(const string &A) {
@@ -284,7 +280,7 @@ int Solution::search(const vector<int> &A, int B) {
         if (A[mid] > A[mid + 1]) {
             pivot = mid;
             break;
-        } else if (A[mid] >= A[beg])//pivot lies to the right 
+        } else if (A[mid] >= A[beg])//pivot lies to the right
             beg = mid + 1;
         else if (A[mid] < A[beg])//pivot lies to the left
             end = mid - 1;
@@ -406,11 +402,7 @@ string Solution::getPermutation(int n, int k) {
 }
 
 int Solution::pow(int x, int n, int d) {
-    // Do not write main() function.
-    // Do not read input, instead use the arguments to the function.
-    // Do not print the output, instead return values as specified
-    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
-
+    /* calculate x^n %d */
     if (d == 1) return 0;
     while (x < 0) x += d;
     long long int ans = 1;
@@ -582,13 +574,13 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
         unordered_map<unsigned long long int, int> hash;
         while (remain != 0 && hash.count(remain) == 0) {
             hash[remain] = answer.length();
-            remain=remain*10;
+            remain = remain * 10;
             while (remain < divisor) {
                 answer += '0';
                 if (hash.count(remain) != 0) break;
                 remain *= 10;
             }
-            if (hash.count(remain) != 0) 
+            if (hash.count(remain) != 0)
                 break;
             temp_quotient = remain / divisor;
             answer += to_string(temp_quotient);
@@ -605,8 +597,109 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
 
 }
 
+vector<int> Solution::findSubstring(string A, const vector<string> &B) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    
+    unordered_map<string,int> hash;
+    for(int i=0;i<B.size();i++){
+        if(hash.count(B[i])!=0)
+            hash[B[i]]=i+1;
+        else hash[B[i]]+=(i+1);
+    }
+    
+    vector<int> answer;
+    
+    int wordsize=B[0].length();
+    int tot_words=B.size();
+    int len=A.length();
+    
+    for(int i=0;i<(len-wordsize*tot_words) ;i++){
+        int j=i;
+        int k=0;
+        int hash_total=0;
+        while(k<tot_words){
+            string temp=A.substr(i+wordsize*k,wordsize);
+            if(hash.count(temp) ==0) break;
+            else hash_total+=hash[temp];
+            k++;
+        }
+        if(k==tot_words && hash_total==(tot_words*(tot_words+1))/2) answer.push_back(i);
+        
+    }
+    
+    
+    
+    return answer;
+}
+
+int Solution::maxPoints(vector<int> &A, vector<int> &B) {
+    // Do not write main() function.
+    // Do not read input, instead use the arguments to the function.
+    // Do not print the output, instead return values as specified
+    // Still have a doubt. Checkout www.interviewbit.com/pages/sample_codes/ for more details
+    if(A.size() <= 2){ return A.size();}
+    
+    int maxcount=2;
+//    //check for overlapping intervals
+//             hash[A[i]++;
+//            }
+//        }
+//        else {
+//            
+//            hash[A[i]]=1;
+//        }
+//    }
+//    unordered_map<int,int> hash;
+//    for(int i=0;i<A.size();i++){
+//        if(hash.count(A[i])!=0)
+//        {
+//            if(B[hash[A[i]]] == B[i]){
+//                hash[A[i]]++;
+//            }
+//        }
+//        else {
+//            
+//            hash[A[i]]=1;
+//        }
+//    }
+//    
+    
+    
+    for(int i=0;i<A.size();i++){
+        for(int j=i+1;j<A.size();j++){
+            int cnt=2;
+            int first=i;
+            int second=j;
+            for(int k=0;k<A.size();k++){
+                if(k==i || k==j) continue;
+                int third=k;
+                 long long  area= 
+                (A[first]*(B[second]-B[third])
+                +A[second]*(B[third]-B[first])
+                +A[third]*(B[first]-B[second])) ;
+                
+                if(area==0){
+                    first=second;
+                    second=third;
+                    cnt++;
+                }
+            }
+            
+            if(cnt > maxcount){
+                maxcount=cnt;
+            }
+        }
+        
+    }
+    return maxcount;
+    
+}
+
 int main() {
-#define DEBUG9
+#define DEBUG11
 #ifdef DEBUG
     freopen("input.txt", "r", stdin);
     int t;
@@ -765,8 +858,63 @@ int main() {
         int numerator, denominator;
         cin >> numerator>>denominator;
         Solution test;
-        cout << test.fractionToDecimal(numerator, denominator)<<endl;
+        cout << test.fractionToDecimal(numerator, denominator) << endl;
     }
+#endif
+
+#ifdef DEBUG10
+    freopen("input10.txt","r",stdin);
+    int t;
+    cin>>t;
+    while(t--){
+        string A;
+        cin>>A;
+        int size;
+        cin>>size;
+        vector<string> B;
+        while(size--){
+            string temp;
+            cin>>temp;
+            B.push_back(temp);
+        }
+        Solution test;
+        vector<int> answer= test.findSubstring(A,B);
+        for(int i=0;i<answer.size();i++){
+            cout<<answer[i]<<" ";
+        }
+        cout<<endl;
+    }
+#endif
+#ifdef DEBUG11
+    freopen("input11.txt","r",stdin);
+    int t;
+    cin>>t;
+    while(t--){
+        int num;
+        cin>>num;
+        vector<int> A;
+        vector<int> B;
+        while(num--){
+            int a,b;
+            cin >> a>> b;
+            A.push_back(a);
+            B.push_back(b);
+        }
+        Solution test;
+        cout<< test.maxPoints(A,B)<<endl;
+    }
+#endif
+#ifdef FIND_PRIME
+    for(int i=1;((7*i)%40)!=1;i++ )
+        cout<<"7*"<<i<<"%40="<<(7*i)%40<<endl;
+    
+    Solution test;
+    int cipher=test.pow(26,7,55);
+    cout<<cipher<<endl;
+    int text=test.pow(cipher,23,55);
+    cout<<text<<endl;
+    
+    
 #endif
     return 0;
 }
